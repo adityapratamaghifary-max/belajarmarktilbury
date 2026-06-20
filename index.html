@@ -90,7 +90,7 @@ function updateProgress(){
   document.getElementById('ptxt').textContent=n+'/347 dipelajari';
   document.getElementById('pbar').style.width=(n/347*100)+'%';
 }
-function openYT(id){ window.open('https://youtu.be/'+id,'_blank','noopener'); }
+function openYT(id){ window.location.href='https://youtu.be/'+id; }
 function esc(s){return (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function render(){
   const arr=VIDEOS.filter(v=>{
@@ -111,18 +111,18 @@ function render(){
     const c=document.createElement('div');c.className='card'+(done?' done':'');
     c.innerHTML=
     '<div class="donebadge">✓ Sudah dipelajari</div>'
-    +'<div class="thumb">'
+    +'<a class="thumb" href="https://youtu.be/'+v.id+'" style="display:block">'
       +'<img loading="lazy" src="https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg" alt="">'
       +'<div class="play"><span></span></div>'
       +'<div class="rank">#'+v.rank+'</div>'
       +'<div class="typ '+v.tipe+'">'+(v.tipe==='Shorts'?'SHORTS':'VIDEO')+'</div>'
       +(v.dur&&v.dur!=='-'?'<div class="dur">'+v.dur+'</div>':'')
-    +'</div>'
+    +'</a>'
     +'<div class="body">'
       +'<div class="title">'+esc(v.title)+'</div>'
       +'<div class="meta">'+v.v+' x ditonton'+(v.umur&&v.umur!=='-'&&v.umur!=='Short'?' · '+v.umur:'')+'</div>'
       +'<div class="row">'
-        +'<button class="btn pri act-play">▶ Tonton di YouTube (ID)</button>'
+        +'<a class="btn pri" href="https://youtu.be/'+v.id+'">▶ Tonton di YouTube (ID)</a>'
         +'<button class="btn act-tr" '+(hasTr?'':'disabled')+'>📄 Transkrip</button>'
       +'</div>'
       +'<button class="donebtn act-done">'+(done?'✓ Sudah dipelajari (ketuk untuk batal)':'Tandai sudah dipelajari')+'</button>'
@@ -135,9 +135,6 @@ function render(){
          ):'<div class="note">Transkrip untuk video ini belum tersedia. Sedang ditarik bertahap (otomatis nyusul).</div>')
       +'</div>'
     +'</div>';
-    const thumb=c.querySelector('.thumb');
-    thumb.addEventListener('click',()=>openYT(v.id));
-    c.querySelector('.act-play').addEventListener('click',e=>{e.stopPropagation();openYT(v.id);});
     const panel=c.querySelector('.panel');
     if(hasTr){
       c.querySelector('.act-tr').addEventListener('click',()=>panel.classList.toggle('open'));
